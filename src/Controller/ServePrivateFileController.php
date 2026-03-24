@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -17,28 +18,34 @@ class ServePrivateFileController extends AbstractController
     private readonly KernelInterface $kernel,
   ) {}
 
-  /**
-   * Returns a PrivateImageExample file for display.
-   *
-   * @param string $path
-   *
-   * @return BinaryFileResponse
-   */
-  #[Route('/serve-private-file/image/{filename}', name: 'serve_private_image')]
-  public function privateImageServe(string $filename): BinaryFileResponse
+    /**
+     * Returns image file for display.
+     *
+     * @param string $filename
+     * @param string $folder
+     * @return BinaryFileResponse
+     */
+  #[Route('/serve-file/image/{filename}/{folder}', name: 'serve_image')]
+  public function imageServe(string $filename, string $folder): BinaryFileResponse
   {
-    return $this->fileServe($filename);
+      try {
+          return $this->fileServe($filename, $folder);
+      }
+      catch (\Exception) {
+          throw new AccessDeniedHttpException();
+      }
   }
 
-  /**
-   * Returns a private file for display.
-   *
-   * @param string $path
-   * @return BinaryFileResponse
-   */
-  private function fileServe(string $fileName): BinaryFileResponse
+    /**
+     * Returns a private file for display.
+     *
+     * @param string $fileName
+     * @param string $folder
+     * @return BinaryFileResponse
+     */
+  private function fileServe(string $fileName, string $folder): BinaryFileResponse
   {
-    $absolutePath = $this->kernel->getProjectDir() . '/daily-files/' . $fileName;
+    $absolutePath = $this->kernel->getProjectDir() . '/daily-files/'. $folder . '/'. $fileName;
 
     return new BinaryFileResponse($absolutePath);
   }

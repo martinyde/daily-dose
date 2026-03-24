@@ -1,6 +1,9 @@
 twig:
     file_name_pattern: '*.twig'
 
+    paths:
+        'daily-files/text-templates': 'text-templates'
+
 when@test:
     twig:
         strict_variables: true

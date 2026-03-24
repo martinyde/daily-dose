@@ -1,16 +1,17 @@
 
-<style>
-    .example-wrapper { margin: 1em auto; width: auto; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { }
-    .container { width: 50%; float: left;}
-    img { width: 100%; }
-</style>
+{% extends "base.html.twig" %}
 
-<div class="example-wrapper">
-  <div class="container left">
-    <img src="{{ path('serve_private_image', {'filename': fileName }) }}" alt="{{ fileName }}">
+{% block body %}
+  <div class="wrapper">
+    <div class="container left">
+      <img src="{{ path('serve_image', {'filename': fileName, 'folder': folder }) }}" alt="{{ fileName }}">
+    </div>
+    <div class="container right">
+      <div class="content-wrapper">
+        <div>
+          {% include ['@text-templates/' ~ folder ~ '.html.twig', '@text-templates/default.html.twig']  %}
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="container right">
-    <h1>asd</h1>
-  </div>
-</div>
+{% endblock %}

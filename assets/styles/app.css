@@ -1,3 +1,52 @@
 body {
-    background-color: skyblue;
+    font: 18px/1.5 sans-serif;
+    margin: 0;
+    overflow: hidden;
+
+    @media (orientation: landscape) {
+        .wrapper {
+            display: flex;
+        }
+
+        .container.left {
+            flex: 1 0 auto;
+            height: 100vh;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        .container.right {
+            flex: 1 1 auto;
+
+            .content-wrapper {
+                padding-left: 1em;
+                margin: 2em;
+                border-left: 2px solid #ebebeb;
+            }
+        }
+    }
+
+    @media (orientation: portrait) {
+        .container.left {
+            width: 100vw;
+            height: 100vh;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        .container.right {
+            display: none;
+        }
+    }
 }
+
+
+
