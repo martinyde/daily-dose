@@ -25,5 +25,4 @@
 ###< symfony/asset-mapper ###
 
 daily-files
-.env
 .idea
