@@ -27,3 +27,4 @@
 daily-files
 .idea
 .env
+docker-compose.override.yml

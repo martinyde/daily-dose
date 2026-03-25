@@ -5,7 +5,6 @@ networks:
   app:
     driver: bridge
     internal: false
-
 services:
   phpfpm:
     image: itkdev/php8.3-fpm:latest
@@ -19,7 +18,7 @@ services:
       - PHP_MEMORY_LIMIT=256M
       # Depending on the setup, you may have to remove --read-envelope-from from msmtp (cf. https://marlam.de/msmtp/msmtp.html) or use SMTP to send mail
       - PHP_SENDMAIL_PATH=/usr/bin/msmtp --host=mail --port=1025 --read-recipients --read-envelope-from
-      - DOCKER_HOST_DOMAIN=${COMPOSE_DOMAIN}
+      - DOCKER_HOST_DOMAIN=${COMPOSE_SERVER_DOMAIN}
       - COMPOSER_VERSION=2
       - PHP_IDE_CONFIG=serverName=localhost
     volumes:
@@ -45,4 +44,4 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${COMPOSE_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${COMPOSE_SERVER_DOMAIN}`)"
