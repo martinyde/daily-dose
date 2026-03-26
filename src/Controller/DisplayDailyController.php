@@ -38,7 +38,7 @@ class DisplayDailyController extends AbstractController
         $differenceDays = $weekdays;
       }
       else {
-        $difference = $startDate->diff($now);
+        $difference = $startDate->modify('+1 day')->diff($now);
         $differenceDays = $difference->days;
       }
 
