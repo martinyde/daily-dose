@@ -20,10 +20,26 @@ class DisplayDailyController extends AbstractController
       $prefix = $keyParts[2];
       $fileType = $keyParts[3];
       $digits = $keyParts[4];
+      $ignoreWeekends = TRUE;
 
       $now = new DateTime();
 
-      $difference = $startDate->diff($now);
+      if ($ignoreWeekends) {
+        $weekdays = 0;
+        $current = clone $startDate;
+        while ($current <= $now) {
+            $day = (int) $current->format('N'); // 1=Mon, 7=Sun
+            if ($day < 6) {
+                $weekdays++;
+            }
+            $current->modify('+1 day');
+        }
+        $difference = $weekdays;
+      }
+      else {
+        $difference = $startDate->diff($now);
+      }
+
       $no = sprintf('%0' . $digits . 'd', $difference->days);
       $fileName = $prefix . $no . '.' . $fileType;
 
