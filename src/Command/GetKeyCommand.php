@@ -31,6 +31,8 @@ class GetKeyCommand extends Command
           ->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'A prefix before the incrementing number of the file to show (If the files are named ch_0001.jpg the prefix would be "ch_"', '')
           ->addOption('filetype', null, InputOption::VALUE_OPTIONAL, 'The file type without "." if none is given jpg is assumed', 'jpg')
           ->addOption('digits', null, InputOption::VALUE_OPTIONAL, 'The number of digits to use in the file names (The sequential numbering of the files after prefix, i.e 01, 0001 or 000001), defaults to 4', 4)
+          ->addOption('ignore_weekends', null, InputOption::VALUE_OPTIONAL, 'Whether to count weekends when iterating over images.', FALSE)
+          ->addOption('start_zero', null, InputOption::VALUE_OPTIONAL, 'Whether the first image is named 0, if omitted 1 is assumed as first image name.', FALSE)
         ;
     }
 
@@ -51,8 +53,10 @@ class GetKeyCommand extends Command
         $prefix = $input->getOption('prefix');
         $fileType = $input->getOption('filetype');
         $digits = $input->getOption('digits');
+        $ignoreWeekends = $input->getOption('ignore_weekends');
+        $startZero = $input->getOption('start_zero');
 
-        $key = base64_encode($startDate.'|'.$folderName.'|'.$prefix.'|'.$fileType.'|'.$digits);
+        $key = base64_encode($startDate.'|'.$folderName.'|'.$prefix.'|'.$fileType.'|'.$digits . '|' . $ignoreWeekends . '|' . $startZero);
 
         $io->success('Created key:' . $key);
         $io->warning('Store this key somewhere to access your daily dose.');

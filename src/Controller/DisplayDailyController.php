@@ -20,33 +20,39 @@ class DisplayDailyController extends AbstractController
       $prefix = $keyParts[2];
       $fileType = $keyParts[3];
       $digits = $keyParts[4];
-      $ignoreWeekends = TRUE;
+      $ignoreWeekends = (bool) $keyParts[5];
+      $startZero = (bool) $keyParts[6];
 
       $now = new DateTime();
 
       if ($ignoreWeekends) {
         $weekdays = 0;
         $current = clone $startDate;
-        while ($current <= $now) {
+        while ($current < $now) {
             $day = (int) $current->format('N'); // 1=Mon, 7=Sun
             if ($day < 6) {
                 $weekdays++;
             }
             $current->modify('+1 day');
         }
-        $difference = $weekdays;
+        $differenceDays = $weekdays;
       }
       else {
         $difference = $startDate->diff($now);
+        $differenceDays = $difference->days;
       }
 
-      $no = sprintf('%0' . $digits . 'd', $difference->days);
+      if ($startZero) {
+          $differenceDays = $differenceDays - 1;
+      }
+
+      $no = sprintf('%0' . $digits . 'd', $differenceDays);
       $fileName = $prefix . $no . '.' . $fileType;
 
-      return $this->render('display_daily/index.html.twig', [
+          return $this->render('display_daily/index.html.twig', [
           'controller_name' => 'DisplayDailyController',
           'start_date' => $startDate,
-          'diff' => $difference->days,
+          'diff' => $differenceDays,
           'fileName' => $fileName,
           'folder' => $folderName,
       ]);
