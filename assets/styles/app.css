@@ -43,7 +43,19 @@ body {
         }
 
         .container.right {
-            display: none;
+            .content-wrapper {
+                h1 {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    right: 0;
+                    text-align: center;
+                }
+
+                div {
+                    display: none;
+                }
+            }
         }
     }
 }
