@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\KeyService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,6 +20,7 @@ class GetKeyCommand extends Command
 {
     public function __construct(
         private readonly KernelInterface $kernel,
+        private readonly KeyService $keyService,
     ) {
         parent::__construct();
     }
@@ -39,24 +41,16 @@ class GetKeyCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $inputArgsOpts = $input->getArguments();
-        $inputArgsOpts['prefix'] = $input->getOption('prefix');
-        $inputArgsOpts['filetype'] = $input->getOption('filetype');
-        foreach ($inputArgsOpts as $value) {
-            if (str_contains($value, '|')) {
-                throw new \InvalidArgumentException('Arguments and options cannot contain "|"');
-            }
-        }
 
-        $startDate = $input->getArgument('start_date');
-        $folderName = $input->getArgument('folder_name');
-        $prefix = $input->getOption('prefix');
-        $fileType = $input->getOption('filetype');
-        $digits = $input->getOption('digits');
-        $ignoreWeekends = $input->getOption('ignore_weekends');
-        $startZero = $input->getOption('start_zero');
-
-        $key = base64_encode($startDate.'|'.$folderName.'|'.$prefix.'|'.$fileType.'|'.$digits . '|' . $ignoreWeekends . '|' . $startZero);
+        $key = $this->keyService->encode(
+            $input->getArgument('start_date'),
+            $input->getArgument('folder_name'),
+            $input->getOption('prefix'),
+            $input->getOption('filetype'),
+            (int) $input->getOption('digits'),
+            (bool) $input->getOption('ignore_weekends'),
+            (bool) $input->getOption('start_zero'),
+        );
 
         $io->success('Created key:' . $key);
         $io->warning('Store this key somewhere to access your daily dose.');

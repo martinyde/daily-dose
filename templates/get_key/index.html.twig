@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Get Key{% endblock %}
+
+{% block body %}
+    <div class="container py-4" style="max-width: 600px;">
+        <h1>Generate Display Key</h1>
+        <p class="lead">Create an access key for a daily image display. The key encodes which image folder to use, the start date, file naming convention, and display options.</p>
+
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary mt-3">Generate Key</button>
+        {{ form_end(form) }}
+
+        {% if key %}
+            <div class="alert alert-success mt-4">
+                <h2 class="h5">Generated Key</h2>
+                <p><code>{{ key }}</code></p>
+                <h2 class="h5">Display URL</h2>
+                <p><code>{{ url('app_display_daily', { key: key }) }}</code></p>
+                <a href="{{ path('app_display_daily', { key: key }) }}" class="btn btn-outline-primary mt-2">Open daily display</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,6 +1,9 @@
 body {
     font: 18px/1.5 sans-serif;
     margin: 0;
+}
+
+.content {
     overflow: hidden;
 
     @media (orientation: landscape) {
@@ -59,6 +62,3 @@ body {
         }
     }
 }
-
-
-

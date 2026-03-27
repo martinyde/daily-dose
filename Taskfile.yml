@@ -55,6 +55,12 @@ tasks:
       - task console -- app:get-key {{.CLI_ARGS}}
     silent: true
 
+  generate-basic-auth:
+    desc: "Generate a BASIC_AUTH token for Traefik (usage: task generate-basic-auth -- username password)"
+    cmds:
+      - echo "$(htpasswd -nb {{index .CLI_ARGS_LIST 0}} {{index .CLI_ARGS_LIST 1}})"
+    silent: true
+
   # Setup
   setup:
     desc: "Set up the project from scratch"

@@ -2,13 +2,15 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-  <div class="wrapper">
-    <div class="container left">
-      <img src="{{ path('serve_image', {'filename': fileName, 'folder': folder }) }}" alt="{{ fileName }}">
-    </div>
-    <div class="container right">
-      <div class="content-wrapper">
-        {% include ['@text-templates/' ~ folder ~ '.html.twig', '@text-templates/default.html.twig']  %}
+  <div class="content">
+    <div class="wrapper">
+      <div class="container left">
+        <img src="{{ path('serve_image', {'filename': fileName, 'folder': folder }) }}" alt="{{ fileName }}">
+      </div>
+      <div class="container right">
+        <div class="content-wrapper">
+          {% include ['@text-templates/' ~ folder ~ '.html.twig', '@text-templates/default.html.twig']  %}
+        </div>
       </div>
     </div>
   </div>

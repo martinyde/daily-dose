@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\KeyService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,18 +11,22 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DisplayDailyController extends AbstractController
 {
+    public function __construct(
+        private readonly KeyService $keyService,
+    ) {
+    }
+
     #[Route('/display/daily/{key}', name: 'app_display_daily')]
     public function index(Request $request, $key): Response
     {
-      $key = base64_decode($key);
-      $keyParts = explode('|', $key);
-      $startDate = DateTime::createFromFormat('Y-m-d', $keyParts[0]);
-      $folderName = $keyParts[1];
-      $prefix = $keyParts[2];
-      $fileType = $keyParts[3];
-      $digits = $keyParts[4];
-      $ignoreWeekends = (bool) $keyParts[5];
-      $startZero = (bool) $keyParts[6];
+      $params = $this->keyService->decode($key);
+      $startDate = DateTime::createFromFormat('Y-m-d', $params['startDate']);
+      $folderName = $params['folderName'];
+      $prefix = $params['prefix'];
+      $fileType = $params['fileType'];
+      $digits = $params['digits'];
+      $ignoreWeekends = $params['ignoreWeekends'];
+      $startZero = $params['startZero'];
 
       $now = new DateTime();
 
