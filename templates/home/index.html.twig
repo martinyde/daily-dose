@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Daily Dose{% endblock %}
+
+{% block body %}
+    <div class="container py-5" style="max-width: 700px;">
+        <h1 class="mb-3">Daily Dose</h1>
+        <p class="lead mb-4">A rotating daily image display from numbered image collections, with templated text overlays.</p>
+
+        <div class="list-group">
+            <a href="{{ path('app_get_key') }}" class="list-group-item list-group-item-action">
+                <h5 class="mb-1">Generate Key</h5>
+                <p class="mb-0 text-body-secondary">Create an access key for a daily image display by choosing a folder and start date.</p>
+            </a>
+            <a href="{{ path('app_display_daily', { key: 'example' }) }}" class="list-group-item list-group-item-action">
+                <h5 class="mb-1">Daily Display</h5>
+                <p class="mb-0 text-body-secondary">View the daily image for a given key. Replace "example" in the URL with a valid generated key.</p>
+            </a>
+            <a href="{{ path('app_iframe_test', { width: 800, height: 600, key: 'example' }) }}" class="list-group-item list-group-item-action">
+                <h5 class="mb-1">Iframe Test</h5>
+                <p class="mb-0 text-body-secondary">Preview the daily display inside an iframe at a given width and height. Useful for testing embedded layouts.</p>
+            </a>
+        </div>
+    </div>
+{% endblock %}
