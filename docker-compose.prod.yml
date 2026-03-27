@@ -48,6 +48,7 @@ services:
 
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${COMPOSE_SERVER_DOMAIN}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.priority=1"
 
       # HTTPS redirect middleware
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
