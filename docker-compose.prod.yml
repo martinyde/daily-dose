@@ -48,28 +48,18 @@ services:
 
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${COMPOSE_SERVER_DOMAIN}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.priority=1"
 
       # HTTPS redirect middleware
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
 
-      # Auth router — /iframe-test
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-auth-http.rule=Host(`${COMPOSE_SERVER_DOMAIN}`) && PathPrefix(`/iframe-test`)"
+      # Auth router — matches /iframe-test and /get-key with basic auth
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-auth-http.rule=Host(`${COMPOSE_SERVER_DOMAIN}`) && (PathPrefix(`/iframe-test`) || PathPrefix(`/get-key`))"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-auth-http.entrypoints=web"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-auth-http.middlewares=redirect-to-https"
 
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-auth.rule=Host(`${COMPOSE_SERVER_DOMAIN}`) && PathPrefix(`/iframe-test`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-auth.rule=Host(`${COMPOSE_SERVER_DOMAIN}`) && (PathPrefix(`/iframe-test`) || PathPrefix(`/get-key`))"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-auth.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-auth.middlewares=auth"
-
-      # Auth router — /get-key
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-getkey-http.rule=Host(`${COMPOSE_SERVER_DOMAIN}`) && PathPrefix(`/get-key`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-getkey-http.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-getkey-http.middlewares=redirect-to-https"
-
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-getkey.rule=Host(`${COMPOSE_SERVER_DOMAIN}`) && PathPrefix(`/get-key`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-getkey.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-getkey.middlewares=auth"
 
       # Basic auth middleware
       - "traefik.http.middlewares.auth.basicauth.users=${BASIC_AUTH}"
