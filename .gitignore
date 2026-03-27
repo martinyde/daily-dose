@@ -25,6 +25,7 @@
 ###< symfony/asset-mapper ###
 
 daily-files
+/config/daily_folders.yaml
 .idea
 .env
 docker-compose.override.yml

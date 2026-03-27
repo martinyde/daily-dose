@@ -27,11 +27,7 @@ class GetKeyController extends AbstractController
             $key = $this->keyService->encode(
                 $data['start_date']->format('Y-m-d'),
                 $data['folder_name'],
-                $data['prefix'] ?? '',
-                $data['filetype'],
-                $data['digits'],
                 $data['ignore_weekends'] ?? false,
-                $data['start_zero'] ?? false,
             );
 
             return $this->redirectToRoute('app_get_key', ['key' => $key]);

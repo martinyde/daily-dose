@@ -1,0 +1,17 @@
+# Configuration for daily file folders.
+# Copy this file to daily_folders.yaml and edit to match your setup.
+#
+# Each entry defines the file naming convention for a folder in daily-files/.
+# The key is the folder name inside daily-files/.
+#
+# Options:
+#   prefix:     Text before the number in file names (default: "")
+#   filetype:   File extension without the dot (default: "jpg")
+#   digits:     Zero-padded number width, e.g. 4 = 0001 (default: 4)
+#   start_zero: First file is numbered 0 instead of 1 (default: false)
+
+example:
+  prefix: "example_"
+  filetype: jpg
+  digits: 4
+  start_zero: false

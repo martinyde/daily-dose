@@ -4,23 +4,26 @@ namespace App\Service;
 
 class KeyService
 {
+    public function __construct(
+        private readonly FolderConfigService $folderConfigService,
+    ) {
+    }
+
     public function encode(
         string $startDate,
         string $folderName,
-        string $prefix,
-        string $fileType,
-        int $digits,
         bool $ignoreWeekends,
-        bool $startZero,
     ): string {
-        foreach ([$startDate, $folderName, $prefix, $fileType] as $value) {
+        $config = $this->folderConfigService->getConfig($folderName);
+
+        foreach ([$startDate, $folderName, $config['prefix'], $config['fileType']] as $value) {
             if (str_contains($value, '|')) {
                 throw new \InvalidArgumentException('Arguments and options cannot contain "|"');
             }
         }
 
         return base64_encode(
-            $startDate . '|' . $folderName . '|' . $prefix . '|' . $fileType . '|' . $digits . '|' . ($ignoreWeekends ? '1' : '') . '|' . ($startZero ? '1' : '')
+            $startDate . '|' . $folderName . '|' . $config['prefix'] . '|' . $config['fileType'] . '|' . $config['digits'] . '|' . ($ignoreWeekends ? '1' : '') . '|' . ($config['startZero'] ? '1' : '')
         );
     }
 

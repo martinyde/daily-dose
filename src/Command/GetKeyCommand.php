@@ -28,13 +28,9 @@ class GetKeyCommand extends Command
     protected function configure(): void
     {
         $this
-          ->addArgument('start_date', InputArgument::OPTIONAL, 'Date(Y-m-d) for the first image to be displayed')
-          ->addArgument('folder_name', InputArgument::OPTIONAL, 'The folder within daily-files folder where files for this key are stored')
-          ->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'A prefix before the incrementing number of the file to show (If the files are named ch_0001.jpg the prefix would be "ch_"', '')
-          ->addOption('filetype', null, InputOption::VALUE_OPTIONAL, 'The file type without "." if none is given jpg is assumed', 'jpg')
-          ->addOption('digits', null, InputOption::VALUE_OPTIONAL, 'The number of digits to use in the file names (The sequential numbering of the files after prefix, i.e 01, 0001 or 000001), defaults to 4', 4)
-          ->addOption('ignore_weekends', null, InputOption::VALUE_OPTIONAL, 'Whether to count weekends when iterating over images.', FALSE)
-          ->addOption('start_zero', null, InputOption::VALUE_OPTIONAL, 'Whether the first image is named 0, if omitted 1 is assumed as first image name.', FALSE)
+          ->addArgument('start_date', InputArgument::REQUIRED, 'Date(Y-m-d) for the first image to be displayed')
+          ->addArgument('folder_name', InputArgument::REQUIRED, 'The folder name as configured in config/daily_folders.yaml')
+          ->addOption('ignore_weekends', null, InputOption::VALUE_NONE, 'Whether to skip weekends when iterating over images')
         ;
     }
 
@@ -45,11 +41,7 @@ class GetKeyCommand extends Command
         $key = $this->keyService->encode(
             $input->getArgument('start_date'),
             $input->getArgument('folder_name'),
-            $input->getOption('prefix'),
-            $input->getOption('filetype'),
-            (int) $input->getOption('digits'),
-            (bool) $input->getOption('ignore_weekends'),
-            (bool) $input->getOption('start_zero'),
+            $input->getOption('ignore_weekends'),
         );
 
         $io->success('Created key:' . $key);
