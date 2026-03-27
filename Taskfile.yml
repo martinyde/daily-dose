@@ -58,7 +58,7 @@ tasks:
   generate-basic-auth:
     desc: "Generate a BASIC_AUTH token for Traefik (usage: task generate-basic-auth -- username password)"
     cmds:
-      - echo "$(htpasswd -nb {{index .CLI_ARGS_LIST 0}} {{index .CLI_ARGS_LIST 1}})"
+      - printf '%s:%s\n' '{{index .CLI_ARGS_LIST 0}}' "$(openssl passwd -apr1 '{{index .CLI_ARGS_LIST 1}}')"
     silent: true
 
   # Setup
