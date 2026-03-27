@@ -1,0 +1,67 @@
+version: "3"
+
+dotenv: [".env.local", ".env"]
+
+vars:
+  DOCKER_COMPOSE: '{{.TASK_DOCKER_COMPOSE | default "docker compose"}}'
+  DOCKER_COMPOSE_FILE: '{{.TASK_DOCKER_COMPOSE_FILE | default "docker-compose.local.yml"}}'
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+    silent: true
+
+  # Docker Compose
+  compose:
+    desc: "Run docker compose command"
+    cmds:
+      - "{{.DOCKER_COMPOSE}} -f {{.DOCKER_COMPOSE_FILE}} {{.CLI_ARGS}}"
+
+  compose-up:
+    desc: "Start docker containers"
+    cmds:
+      - task compose -- up --detach --remove-orphans
+    silent: true
+
+  compose-down:
+    desc: "Stop docker containers"
+    cmds:
+      - task compose -- down
+    silent: true
+
+  compose-logs:
+    desc: "Show docker container logs"
+    cmds:
+      - task compose -- logs --follow {{.CLI_ARGS}}
+
+  # Composer
+  composer:
+    desc: "Run composer command"
+    cmds:
+      - task compose -- exec phpfpm composer {{.CLI_ARGS}}
+    silent: true
+
+  # Symfony Console
+  console:
+    desc: "Run Symfony console command"
+    cmds:
+      - task compose -- exec phpfpm php bin/console {{.CLI_ARGS}}
+    silent: true
+
+  get-key:
+    desc: "Generate an access key for daily file display"
+    cmds:
+      - task console -- app:get-key {{.CLI_ARGS}}
+    silent: true
+
+  # Setup
+  setup:
+    desc: "Set up the project from scratch"
+    cmds:
+      - task compose-up
+      - task composer --s install
+      - task console -- importmap:instal
+      - task console -- assets:install
+      - task console -- cache:clear
+    silent: true
