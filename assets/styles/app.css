@@ -1,10 +1,11 @@
 body {
     font: 18px/1.5 sans-serif;
     margin: 0;
+    overflow-x: hidden;
 }
 
 .content {
-    overflow: hidden;
+    width: 100vw;
 
     @media (orientation: landscape) {
         .wrapper {
@@ -12,7 +13,7 @@ body {
         }
 
         .container.left {
-            flex: 1 0 auto;
+            flex: 1 1 auto;
             height: 100vh;
 
             img {
@@ -23,7 +24,7 @@ body {
         }
 
         .container.right {
-            flex: 1 1 auto;
+            flex: 1 1 600px;
 
             .content-wrapper {
                 padding-left: 1em;
