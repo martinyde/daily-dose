@@ -6,6 +6,7 @@ use App\Service\KeyService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,6 +18,7 @@ class DisplayDailyController extends AbstractController
     }
 
     #[Route('/display/daily/{key}', name: 'app_display_daily')]
+    #[Cache(maxage: 43200, public: true, mustRevalidate: true)]
     public function index(Request $request, $key): Response
     {
       $params = $this->keyService->decode($key);
