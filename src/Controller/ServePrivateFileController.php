@@ -29,7 +29,12 @@ class ServePrivateFileController extends AbstractController
   public function imageServe(string $filename, string $folder): BinaryFileResponse
   {
       try {
-          return $this->fileServe($filename, $folder);
+          $response = $this->fileServe($filename, $folder);
+          $response->setPublic();
+          $response->setMaxAge(43200);
+          $response->setSharedMaxAge(0);
+          $response->headers->addCacheControlDirective('must-revalidate');
+          return $response;
       }
       catch (\Exception) {
           throw new AccessDeniedHttpException();
